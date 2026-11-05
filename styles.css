@@ -1,0 +1,385 @@
+/* ==========================================================
+   j'ai essayé de commenter toutes les étapes du code CSS pour que ce soit plus facile à comprendre pour moi tout d'abord et pour les autres ensuite.
+   Je m'inspire du codage sur VBA, SQL pour commenter le code CSS.
+   ========================================================== */
+/* 1. POLICE : Roboto chargée depuis Google Fonts (comme demandé dans l'énoncé du CSS project) */
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap");
+
+/* j'ai fait une déclaration de VARIABLES : palette et réglages centralisés.(Comme la programation VBA)  */
+:root {
+  --ink: #12263a; /* bleu ardoise : texte et fonds sombres */
+  --ink-soft: #1d3750;
+  --paper: #eef2f6; /* fond de page */
+  --card: #ffffff; /* fond des cartes */
+  --line: #cbd5df; /* bordures fines */
+  --muted: #4a5b6c; /* texte secondaire (sous-titres) */
+  --accent: #f2b705; /* jaune sécurité : points forts du design */
+  --radius: 12px; /* arrondi commun à tous les blocs */
+  --container: 1040px; /* largeur maximale du contenu */
+}
+
+/* ==========================================================
+   2. BASE
+   Règles générales appliquées à toute la page.
+   ========================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Défilement doux quand on clique sur un lien de la navbar */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Application de la police, taille, interligne et couleurs de base du site */
+body {
+  margin: 0;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+/* Titres : interligne serré et marge basse commune */
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  margin: 0 0 0.6em;
+}
+/* Paragraphes : lignes limitées à 70 caractères pour la lisibilité */
+p {
+  margin: 0 0 1em;
+  max-width: 70ch;
+}
+/* Liens par défaut */
+a {
+  color: var(--ink);
+}
+/* Accessibilité : contour jaune visible au clavier (touche Tab) */
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ==========================================================
+   3. EN-TÊTE (header)
+   Bloc sombre en grille : photo à gauche, titre + texte à droite, navbar en bas.
+   ========================================================== */
+/* Conteneur : grille à 2 colonnes, fond sombre, ligne jaune pointillée en bas.
+   Le padding latéral calculé centre le contenu sur --container. */
+header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto auto;
+  align-items: center;
+  column-gap: 3rem;
+  padding: 4rem max(1.25rem, calc((100% - var(--container)) / 2)) 0;
+  background: var(--ink);
+  color: #fff;
+  border-bottom: 6px solid var(--accent); /* ligne de marquage au sol */
+}
+
+/* Photo : colonne 1, sur les 2 premières lignes ; ombre jaune décalée */
+header img {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  box-shadow: 10px 10px 0 var(--accent);
+  background: var(--ink-soft);
+}
+
+/* Nom : colonne 2, ligne 1, taille fluide selon l'écran (clamp) */
+header h1 {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: end;
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Description : colonne 2, ligne 2 */
+header p {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: start;
+  font-size: 1.15rem;
+  color: #d8e1ea;
+}
+
+/* Mot-clé « Supply Chain Manager » mis en jaune */
+header p strong {
+  color: var(--accent);
+}
+
+/* ==========================================================
+   4. NAVBAR EN LIGNE
+   Placée sur la ligne 3 de la grille de l'en-tête, sur toute la largeur.
+   ========================================================== */
+
+nav {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  margin-top: 3rem;
+}
+
+/* LA LISTE EN LIGNE : display:flex aligne les <li> horizontalement */
+nav ul {
+  display: flex; /* liens sur une seule ligne */
+  flex-wrap: nowrap;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+}
+
+/* Chaque item garde sa taille (pas d'écrasement) */
+nav li {
+  flex: 0 0 auto;
+}
+
+/* Liens : blancs, sans soulignement, trait transparent réservé en bas */
+nav a {
+  display: block;
+  padding: 0.9rem 1rem 0.8rem;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 4px solid transparent;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+/* Survol : texte et trait deviennent jaunes */
+nav a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ==========================================================
+   5. CONTENU PRINCIPAL (main / section)
+   Colonne centrée et titres de sections communs.
+   ========================================================== */
+/* Colonne centrale : largeur max + marges auto = centrée */
+main {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 1rem 1.25rem 3rem;
+}
+
+/* Espace vertical entre sections (appliqué aussi aux sections imbriquées) */
+section {
+  padding: 2rem 0 0.5rem;
+}
+
+/* Titres de sections (About Me, Skills...) : barre jaune à gauche */
+section h2 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  padding-left: 0.9rem;
+  border-left: 8px solid var(--accent);
+  margin-bottom: 1.4rem;
+}
+
+/* Sous-titres (Supply Chain & Operations, Data & Analytics...) : gris, plus discrets */
+section h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--muted);
+  margin: 1.4rem 0 0.7rem;
+}
+
+/* ==========================================================
+   6. SKILLS (#skills)
+   Chaque <li> devient une étiquette arrondie ; la liste passe à la ligne automatiquement.
+   ========================================================== */
+/* Liste : flex + wrap = étiquettes côte à côte, retour à la ligne si besoin */
+#skills ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Étiquette : pilule blanche à bordure fine */
+#skills li {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.9rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+/* ==========================================================
+   7. PROJECTS (article + boutons)
+   Chaque projet est une carte avec bande jaune à gauche ; les liens et le bouton d'envoi partagent le même style.
+   ========================================================== */
+/* Carte projet */
+article {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 8px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.6rem 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Titre du projet : plus grand et sombre (annule le gris des sous-titres) */
+article h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-top: 0;
+}
+
+/* BOUTON : lien du projet + bouton « Send Message » (même apparence) */
+article a,
+button {
+  display: inline-block;
+  padding: 0.65rem 1.3rem;
+  font: inherit;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--accent);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+/* Survol : on inverse les couleurs */
+article a:hover,
+button:hover {
+  background: var(--ink);
+  color: var(--accent);
+}
+
+/* ==========================================================
+   8. EDUCATION (#education)
+   Liste transformée en frise chronologique : trait pointillé + point jaune par diplôme.
+   ========================================================== */
+/* Trait vertical pointillé à gauche de la liste */
+#education ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 1.4rem;
+  border-left: 3px dashed var(--line);
+}
+
+/* Chaque diplôme sert de repère de position pour son point */
+#education li {
+  position: relative;
+  margin-bottom: 1.2rem;
+}
+
+/* Le point jaune, créé en CSS (pseudo-élément ::before, rien dans le HTML) */
+#education li::before {
+  content: "";
+  position: absolute;
+  left: -1.95rem;
+  top: 0.45rem;
+  width: 14px;
+  height: 14px;
+  background: var(--accent);
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+}
+
+/* ==========================================================
+   9. CERTIFICATIONS (#certifications)
+   Chaque liste de certifications devient une carte blanche sous son sous-titre.
+   ========================================================== */
+/* Carte contenant les puces */
+#certifications ul {
+  margin: 0 0 1rem;
+  padding: 1.2rem 1.4rem 1.2rem 2.4rem;
+  font-size: 0.95rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+/* Espace entre deux certifications */
+#certifications li {
+  margin-bottom: 0.35rem;
+}
+
+/* ==========================================================
+   10. CONTACT (formulaire)
+   Le cadre, les libellés, les champs et leur état actif.
+   ========================================================== */
+/* Cadre du formulaire : carte blanche limitée en largeur */
+fieldset {
+  max-width: 640px;
+  padding: 1.5rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+/* Titre « Send me a message » et libellés des champs */
+legend {
+  font-weight: 700;
+  padding: 0 0.5rem;
+}
+label {
+  display: inline-block;
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}
+
+/* Champs de saisie : pleine largeur, même police que le site */
+input,
+textarea {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  font: inherit;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+/* Zone de message : redimensionnable en hauteur seulement */
+textarea {
+  resize: vertical;
+}
+
+/* Champ actif : contour jaune */
+input:focus,
+textarea:focus {
+  outline: 3px solid var(--accent);
+  border-color: var(--ink);
+}
+
+/* ==========================================================
+   11. PIED DE PAGE (footer)
+   Reprend l'en-tête : fond sombre et ligne jaune pointillée, mais en haut.
+   ========================================================== */
+/* Bande sombre centrée */
+footer {
+  padding: 1.5rem 1rem;
+  text-align: center;
+  color: #d8e1ea;
+  background: var(--ink);
+  border-top: 6px solid var(--accent);
+}
+
+footer p {
+  margin: 0 auto;
+}
